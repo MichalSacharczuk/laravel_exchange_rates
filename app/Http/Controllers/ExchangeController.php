@@ -9,40 +9,42 @@ class ExchangeController extends Controller
 	public function getExchangeRates(Request $request)
 	{
 		$date_now = date('Y-m-d');
-		// $date_now = '2019-09-07'; // // do testów - weekend
-		// $date_now = '2019-09-01'; // // do testów - weekend
+		// $date_now = '2019-09-08';
+
+		$validation_message = 'Proszę podać poprawną datę.';
 
 		$request->validate([
 			'date' => 'required|date',
 		], [
-			'date.required' => 'Proszę podać poprawną datę.',
-			'date.date' => 'Proszę podać poprawną datę.',
+			'date.required' => $validation_message,
+			'date.date' => $validation_message,
 		]);
 
-		// if ( !isset($request->date) || $request->date > $date_now ) {
-		// 	return back()->with('no_input', 'Podaj poprawną datę.');
-		// }
+		$last_date = $request->date;
 
 		$url_start = 'http://api.nbp.pl/api/exchangerates/rates/c/usd/';
-		// $url = $url_start . $request->date . '/' . $date_now;
-		// $url = $url_start . '2019-09-04/2019-09-06'; // // DO TESTÓW
+		$url = $url_start . $request->date . '/' . $date_now;
 
 		$content = @file_get_contents($url);
 
-		// walidacja czy poprawnie pobrano???
+		$object = json_decode($content);
 
-		$data = json_decode($content);
+		if ( !empty($object->rates) ) {
+			// dd( $object->rates );
 
-		if ( !empty($data->rates) ) {
-			dd( $data->rates );
+			$rates = $object->rates;
+
+			$rates = array_reverse($rates);
+
+			// return view('main', compact('rates', 'last_date'));
+			return back()->with([
+				'rates' => $rates,
+				'last_date' => $last_date,
+			]);
 		}
 		else {
-			echo "Brak danych";
+			return back()->with('error_message', 'Nie udało się pobrać danych.');
 		}
-		
 
-		// !!!!!!!!!!! pamiętać że w weekendy nie ma danych z kursów!!!!!!!
-
-		return '';
 	}
 }

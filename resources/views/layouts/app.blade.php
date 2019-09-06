@@ -20,6 +20,18 @@
 	<!-- Styles -->
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+	<style>
+		a {
+			color: inherit;
+		}
+		a:hover {
+			text-decoration: none;
+		}
+		#rates {
+			max-width: 700px;
+		}
+	</style>
+
 	@yield('headers')
 
 </head>
@@ -28,10 +40,12 @@
 		<nav class="navbar navbar-expand-md navbar-light navbar-laravel">
 			<div class="container">
 				
-				<div class="d-flex flex-wrap h5 my-2">
-					<div>Exchange Rates App&nbsp;</div>
-					<div>by Michał Sacharczuk</div>
-				</div>
+				<a href="{{ url('/') }}" class="a">
+					<div class="d-flex flex-wrap h5 my-2">
+						<div>Exchange Rates App&nbsp;</div>
+						<div>by Michał Sacharczuk</div>
+					</div>
+				</a>
 
 			</div>
 		</nav>
