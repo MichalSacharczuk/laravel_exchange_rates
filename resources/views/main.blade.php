@@ -42,7 +42,7 @@
 		{{ csrf_field() }}
 		
 		<div class="mr-2 my-3">
-			<input type="date" name="date" class="form-control {{ $errors->has('date') ? ' is-invalid' : '' }}" value="{{ !empty($last_date) ? $last_date : date('Y-m-d') }}">
+			<input type="date" name="date" class="form-control {{ $errors->has('date') ? ' is-invalid' : '' }}" value="{{ session('last_date') ?: date('Y-m-d') }}">
 			
 			@if ($errors->has('date'))
 			<span class="invalid-feedback">
